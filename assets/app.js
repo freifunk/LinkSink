@@ -1,10 +1,12 @@
-import './bootstrap.js';
-/*
- * Welcome to your app's main JavaScript file!
- *
- * This file will be included onto the page via the importmap() Twig function,
- * which should already be in your base.html.twig.
- */
-import './styles/app.css';
+import $ from 'jquery';
+import 'bootstrap';
+import './styles/links.css';
+import '@selectize/selectize';
 
-console.log('This log comes from assets/app.js - welcome to AssetMapper! 🎉');
+console.log("here we are");
+document.addEventListener('DOMContentLoaded', function() {
+    const selectElements = document.querySelectorAll('#link_category, #link_tags');
+    selectElements.forEach(element => {
+        $(element).selectize();
+    });
+});

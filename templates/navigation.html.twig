@@ -1,0 +1,13 @@
+<header class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand {% if app.request.pathinfo == path('index') %}active {% endif %}" href="{{ path('index') }}">Freifunk LinkSink</a>
+    <a class="nav-link {% if app.request.pathinfo == path('_new') %}active {% endif %}" href="{{ path('_new') }}">
+        <i class="bi bi-plus-square"></i> Neuer Link
+    </a>
+    <div class="ml-auto">
+        <div class="nav-item">
+            <a class="nav-link" title="Zieh das in deine Bookmarkleiste und klicke darauf, wenn du eine interessante Seite findest." href="{{ asset('js/bookmarklet/bookmarklet_loader.txt') }}">
+                <i class="bi bi-bookmark"></i> Bookmarklet
+            </a>
+        </div>
+    </div>
+</header>

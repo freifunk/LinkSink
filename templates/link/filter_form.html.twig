@@ -1,0 +1,37 @@
+<form class="filter" method="post" action="{{ path('_filter') }}">
+    <div class="row">
+        <div class="col-md-3">
+            <label for="link_category">Kategorie</label>
+            <select class="form-select" id="link_category" name="category">
+                <option value="">{{ 'Kategorie' }}</option>
+                {% for categoryItem in categories %}
+                    <option value="{{ categoryItem.getSlug() }}">{{ categoryItem.getName() }}</option>
+                {% endfor %}
+                <option value=""> - leer - </option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label for="link_year">Jahr</label>
+            <select class="form-select" id="link_year" name="year">
+                <option value="">{{ 'Jahr' }}</option>
+                {% for yearItem in years %}
+                    <option value="{{ yearItem.pubyear }}">{{ yearItem.pubyear }}</option>
+                {% endfor %}
+                <option value=""> - leer - </option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label for="link_tag">Tag</label>
+            <select class="form-select" id="link_tag" name="tag">
+                <option value="">{{ 'Tag' }}</option>
+                {% for tagItem in tags %}
+                    <option value="{{ tagItem.getSlug() }}">{{ tagItem.getName() }}</option>
+                {% endfor %}
+                <option value=""> - leer - </option>
+            </select>
+        </div>
+        <div class="col-md-1 d-flex align-items-end">
+            <button type="submit" class="btn btn-primary">Filtern</button>
+        </div>
+    </div>
+</form>

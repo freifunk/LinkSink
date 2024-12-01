@@ -1,0 +1,9 @@
+{% extends 'layout.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        <h1 class="my-4">Kategorie bearbeiten</h1>
+        {{ entity.name }}
+        {{ include('category/category_form.html.twig') }}
+    </div>
+{% endblock %}
