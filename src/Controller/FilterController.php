@@ -95,9 +95,9 @@ class FilterController extends AbstractController
         } else {
             return $this->render('link/index.html.twig', [
                 'entities' => $entities,
-                'tag' => $myTag,
+                'tag' => $myTag ? $myTag->getSlug() : '',
                 'tags' => $allTags,
-                'category' => $myCategory,
+                'category' => $myCategory ? $myCategory->getSlug() : '',
                 'categories' => $allCategories,
                 'year' => $year,
                 'years' => $years,

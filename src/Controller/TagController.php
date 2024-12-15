@@ -91,7 +91,7 @@ class TagController extends AbstractController
         ]);
     }
 
-    #[Route('/query/', methods: ['GET'])]
+    #[Route('/query/', methods: ['GET'], priority: 1, format: 'json')]
     public function queryAction(Request $request): Response
     {
         $accepts = AcceptHeader::fromString($request->headers->get('Accept'));

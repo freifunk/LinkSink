@@ -41,4 +41,27 @@ return [
     '@selectize/selectize' => [
         'version' => '0.15.2',
     ],
+    'bootstrap-icons/font/bootstrap-icons.min.css' => [
+        'version' => '1.11.3',
+        'type' => 'css',
+    ],
+    '@fontsource/lato' => [
+        'version' => '5.1.0',
+    ],
+    '@fontsource/lato/index.min.css' => [
+        'version' => '5.1.0',
+        'type' => 'css',
+    ],
+    '@selectize/selectize/dist/css/selectize.bootstrap5.css' => [
+        'version' => '0.15.2',
+        'type' => 'css',
+    ],
+    '@fontsource/lato/700.css' => [
+        'version' => '5.1.0',
+        'type' => 'css',
+    ],
+    '@fontsource/lato/900.css' => [
+        'version' => '5.1.0',
+        'type' => 'css',
+    ],
 ];

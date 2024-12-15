@@ -14,7 +14,7 @@
     {% endif %}
     <div class="container mt-4">
         <div class="row">
-            {% if app.request.attributes.get('_route') %}
+            {% if app.request.attributes.get('_route') != 'index' %}
                 <div class="col-12">
                     <div class="alert alert-info">
                         <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) }}.rss"><i class="bi bi-rss"></i> Link zum Feed</a>

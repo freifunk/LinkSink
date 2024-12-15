@@ -10,19 +10,21 @@
     {% block css %}{% endblock %}
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    {% include "navigation.html.twig" %}
-</nav>
+{% include "navigation.html.twig" %}
 
 <div class="container mt-4">
-    <div class="row">
-        <div class="col-md-3">
-            <img src="{{ asset('build/logo.png') }}" title="Freifunk-Logo" alt="Freifunk-Logo" class="img-fluid">
-        </div>
-        <div class="col-md-9">
-            <p>
-                LinkSink soll helfen, verteilte Medien zusammenzutragen. Die Entwicklung kann <a href="https://github.com/andibraeu/LinkSink" target="_blank">auf Github</a> unterstützt werden.
-            </p>
+    <div class="card">
+        <div class="row g-0">
+            <div class="col-md-3">
+                <img src="{{ asset('images/logo.png') }}" title="Freifunk-Logo" alt="Freifunk-Logo" class="img-fluid">
+            </div>
+            <div class="col-md-9">
+                <div class="card-body">
+                    <p class="card-text">
+                        LinkSink soll helfen, verteilte Medien zusammenzutragen. Die Entwicklung kann <a href="https://github.com/freifunk/LinkSink" target="_blank">auf Github</a> unterstützt werden.
+                    </p>
+                </div>
+            </div>
         </div>
     </div>
 </div>

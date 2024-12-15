@@ -50,10 +50,10 @@ trait TagTrait {
     }
 
     public function getTagsAsText(): string {
-        if (count($this->tags) > 0) {
+        if (count($this->getTags()) > 0) {
             $tags = [];
-            foreach ($this->tags as $tag) {
-                $tags[] = $tag->name;
+            foreach ($this->getTags() as $tag) {
+                $tags[] = $tag->getName();
             }
             return implode(',', $tags);
         } else {

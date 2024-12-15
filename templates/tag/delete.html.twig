@@ -2,8 +2,8 @@
 
 {% block body -%}
     <div class="container mt-4">
-        <div class="row">
-            <div class="col">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
                 <form class="form" method="post" action="{% if entity.id|default(0) > 0 %}{{ path('tag_deleteconfirmed',{'slug':entity.slug}) }}{% else %}{{ path('tag_show',{'slug':entity.slug}) }}{% endif %}">
                     <div class="alert alert-danger" role="alert">
                         Soll das Tag <strong>{{ entity.getName() }}</strong> wirklich gelöscht werden?
