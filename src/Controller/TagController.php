@@ -2,66 +2,41 @@
 
 namespace App\Controller;
 
-use App\Entity\Link;
-use App\Entity\Tag;
-use App\Repository\CategoryRepository;
-use App\Repository\TagRepository;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Service\TagService;
 use Eko\FeedBundle\Feed\FeedManager;
 use Eko\FeedBundle\Field\Item\ItemField;
 use Eko\FeedBundle\Field\Item\MediaItemField;
-
-
-use Symfony\{Bundle\FrameworkBundle\Controller\AbstractController,
-    Component\HttpFoundation\JsonResponse,
-    Component\HttpFoundation\Request,
-    Component\Routing\Annotation\Route,
-    Component\HttpFoundation\Response,
-    Component\HttpFoundation\AcceptHeader};
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\AcceptHeader;
 
 #[Route('/tags')]
 class TagController extends AbstractController
 {
-    private EntityManagerInterface $entityManager;
-    private TagRepository $tagRepository;
-    private CategoryRepository $categoryRepository;
+    private TagService $tagService;
     private FeedManager $feedManager;
 
-    public function __construct(EntityManagerInterface $entityManager, TagRepository $tagRepository, CategoryRepository $categoryRepository, FeedManager $feedManager)
+    public function __construct(TagService $tagService, FeedManager $feedManager)
     {
-        $this->entityManager = $entityManager;
-        $this->tagRepository = $tagRepository;
-        $this->categoryRepository = $categoryRepository;
+        $this->tagService = $tagService;
         $this->feedManager = $feedManager;
     }
 
     #[Route('/{slug}.{format}', name: 'tag_show', defaults: ['format' => 'html'], methods: ['GET'])]
     public function showAction(string $slug, string $format)
     {
-        $allCategories = $this->categoryRepository->findAll();
-
-        $allTags = $this->tagRepository->findBy([], ['slug' => 'ASC']);
-
-        $tag = $this->tagRepository->findOneBy(['slug' => $slug]);
+        $allCategories = $this->tagService->getAllCategories();
+        $allTags = $this->tagService->getAllTags();
+        $tag = $this->tagService->getTagBySlug($slug);
 
         if (!$tag) {
             throw $this->createNotFoundException('Unable to find tag entity.');
         }
 
-        $qb = $this->entityManager->createQueryBuilder();
-        $qb->select('e.pubyear')
-            ->from(Link::class, 'e')
-            ->orderBy('e.pubyear', 'desc')
-            ->groupBy('e.pubyear');
-        $years = $qb->getQuery()->execute();
-        $qb = $this->entityManager->createQueryBuilder();
-
-        $qb->select('e')
-            ->from(Link::class, 'e')
-            ->join('e.tags', 't', 'WITH', $qb->expr()->in('t.id', $tag->getId()))
-            ->where('e.deleted IS NULL')
-            ->orderBy('e.pubdate', 'desc');
-        $entities = $qb->getQuery()->execute();
+        $entities = $this->tagService->getLinksByTag($tag);
 
         if ($format == 'rss') {
             $feed = $this->feedManager->get('news');
@@ -71,21 +46,20 @@ class TagController extends AbstractController
 
             return new Response($feed->render('rss'), 200, ['Content-Type' => 'application/rss+xml']);
         } else {
-            return $this->render('link/index.html.twig', array(
+            return $this->render('link/index.html.twig', [
                 'entities' => $entities,
                 'tag' => $tag,
                 'categories' => $allCategories,
                 'tags' => $allTags,
-                'years' => $years,
-            ));
+                'years' => $this->tagService->getYears(),
+            ]);
         }
     }
 
     #[Route('/', name: 'tag_list', methods: ['GET'])]
     public function indexAction(): Response
     {
-        $repo = $this->entityManager->getRepository(Tag::class);
-        $entities = $repo->findAll();
+        $entities = $this->tagService->getAllTags();
         return $this->render('tag/index.html.twig', [
             'entities' => $entities,
         ]);
@@ -96,14 +70,7 @@ class TagController extends AbstractController
     {
         $accepts = AcceptHeader::fromString($request->headers->get('Accept'));
         if ($accepts->has('application/json')) {
-            $qb = $this->entityManager->createQueryBuilder();
-            $qb->select('t')
-                ->from(Tag::class, 't')
-                ->where('t.name LIKE :tag')
-                ->orderBy('t.name')
-                ->setParameter('tag', sprintf('%%%s%%', strtolower($request->query->get('q'))));
-            $entities = $qb->getQuery()->getResult();
-
+            $entities = $this->tagService->searchTags($request->query->get('q'));
             $tags = array_map(fn($tag) => ['id' => $tag->getId(), 'name' => $tag->getName()], $entities);
 
             return new JsonResponse($tags);
@@ -115,7 +82,7 @@ class TagController extends AbstractController
     #[Route('/{slug}/delete', name: 'tag_delete', methods: ['GET'])]
     public function deleteAction(string $slug): Response
     {
-        $entity = $this->tagRepository->findOneBy(['slug' => $slug]);
+        $entity = $this->tagService->getTagBySlug($slug);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Tag entity.');
@@ -133,7 +100,7 @@ class TagController extends AbstractController
     #[Route('/{slug}/deleteconfirmed', name: 'tag_deleteconfirmed', methods: ['POST'])]
     public function deleteConfirmedAction(Request $request, string $slug): Response
     {
-        $entity = $this->tagRepository->findOneBy(['slug' => $slug]);
+        $entity = $this->tagService->getTagBySlug($slug);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Tag entity.');
@@ -141,8 +108,7 @@ class TagController extends AbstractController
 
         if ($entity->isValid()) {
             $name = $entity->getName();
-            $this->entityManager->remove($entity);
-            $this->entityManager->flush();
+            $this->tagService->deleteTag($entity);
 
             return $this->redirectToRoute('tag_list', ['deletedname' => $name]);
         }
