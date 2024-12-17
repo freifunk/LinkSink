@@ -1,22 +1,8 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: andi
- * Date: 20.02.17
- * Time: 22:33
- */
 
 namespace App\Controller;
 
-
-use App\Entity\Link;
-use App\Repository\CategoryRepository;
-use App\Repository\TagRepository;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\QueryBuilder;
-
+use App\Service\FilterService;
 use Eko\FeedBundle\Feed\FeedManager;
 use Eko\FeedBundle\Field\Item\ItemField;
 use Eko\FeedBundle\Field\Item\MediaItemField;
@@ -27,16 +13,12 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route("/filter")]
 class FilterController extends AbstractController
 {
-    private EntityManagerInterface $entityManager;
-    private CategoryRepository $categoryRepository;
-    private TagRepository $tagRepository;
+    private FilterService $filterService;
     private FeedManager $feedManager;
 
-    public function __construct(EntityManagerInterface $entityManager, CategoryRepository $categoryRepository, TagRepository $tagRepository, FeedManager $feedManager)
+    public function __construct(FilterService $filterService, FeedManager $feedManager)
     {
-        $this->entityManager = $entityManager;
-        $this->categoryRepository = $categoryRepository;
-        $this->tagRepository = $tagRepository;
+        $this->filterService = $filterService;
         $this->feedManager = $feedManager;
     }
 
@@ -49,41 +31,22 @@ class FilterController extends AbstractController
     #[Route('/y/{year}/{tag}.{format}', name: 'year_tag_filter', requirements: ['year' => '\d{4}'], defaults: ['category' => '', 'format' => 'html'], methods: ['GET'])]
     public function showAction(string $category, string $year, string $tag, string $format): Response
     {
-        $myCategory = $this->categoryRepository->findOneBy(['slug' => $category]);
-        $allCategories = $this->categoryRepository->findAll();
-        $allTags = $this->tagRepository->findAllOrderedBySlug();
+        $myCategory = $this->filterService->findCategoryBySlug($category);
+        $allCategories = $this->filterService->findAllCategories();
+        $allTags = $this->filterService->findAllTags();
 
         if ($category && !$myCategory) {
             throw $this->createNotFoundException('Unable to find category entity.');
         }
 
-        $myTag = $this->tagRepository->findOneBy(['slug' => $tag]);
+        $myTag = $this->filterService->findTagBySlug($tag);
 
         if ($tag && !$myTag) {
             throw $this->createNotFoundException('Unable to find tag entity.');
         }
 
-        $qb = $this->entityManager->createQueryBuilder();
-        $qb->select('e.pubyear')
-            ->from('App\Entity\Link', 'e')
-            ->orderBy('e.pubyear', 'desc')
-            ->groupBy('e.pubyear');
-        $years = $qb->getQuery()->getResult();
-
-        $qb = $this->entityManager->createQueryBuilder()
-            ->select('e')
-            ->from('App\Entity\Link', 'e')
-            ->leftJoin('e.category', 'c', 'WITH', $qb->expr()->in('c.id', $myCategory ? $myCategory->getId() : -1))
-            ->leftJoin('e.tags', 't', 'WITH', $qb->expr()->in('t.id', $myTag ? $myTag->getId() : -1))
-            ->andWhere('e.deleted IS NULL')
-            ->orderBy('e.pubdate', 'desc');
-
-        if ($year) {
-            $qb->andWhere('e.pubyear = :year')
-                ->setParameter('year', $year);
-        }
-        /** @var Link[] $entities */
-        $entities = $qb->getQuery()->getResult();
+        $years = $this->filterService->findAllYears();
+        $entities = $this->filterService->findLinks($myCategory ? $myCategory->getId() : -1, $year, $myTag ? $myTag->getId() : -1);
 
         if ($format == 'rss') {
             $feed = $this->feedManager->get('news');
