@@ -3,18 +3,13 @@
 namespace App\Controller;
 
 use App\Service\LinkService;
-use Doctrine\ORM\EntityManagerInterface;
-use App\Entity\Category;
-use App\Entity\Enclosure;
+use DateTime;
 use App\Entity\Link;
-use App\Entity\Tag;
-use Eko\FeedBundle\Feed\FeedManager;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\String\Slugger\SluggerInterface;
 
 
 #[Route('/')]
@@ -89,7 +84,7 @@ class LinkController extends AbstractController
             $entity->setUrl($request->get('url'));
         }
         if ($request->get('date') !== null) {
-            $pubdate = new \DateTime("@" . $request->get('date'));
+            $pubdate = new DateTime("@" . $request->get('date'));
             $entity->setPubdate($pubdate);
         }
         if ($request->get('title') !== null) {
@@ -110,14 +105,7 @@ class LinkController extends AbstractController
     public function createAction(Request $request): Response
     {
         $entity = new Link();
-        $category = $this->linkService->getCategoryBySlug($request->get('ls_category'));
-
-        if ($entity->isValid() && !$request->get('ls_origin') && $category !== null) {
-            $this->linkService->saveLink($request, $entity);
-            return $this->redirectToRoute('_show', ['slug' => $entity->getSlug()]);
-        } else {
-            return $this->redirectToRoute('index');
-        }
+        return $this->validateAndReturn($request, $entity);
     }
 
     #[Route("/links/{slug}", name: "_show", methods: ["GET"])]
@@ -165,7 +153,7 @@ class LinkController extends AbstractController
     }
 
     #[Route("/links/{slug}/deleteconfirmed", name: "_deleteconfirmed", methods: ["POST"])]
-    public function deleteConfirmedAction(Request $request, string $slug): Response
+    public function deleteConfirmedAction(string $slug): Response
     {
         $entity = $this->linkService->getLinkBySlug($slug);
 
@@ -195,6 +183,16 @@ class LinkController extends AbstractController
         }
 
         $logger->warning('Update link ' . $entity->getId() . ' ' . $entity->getTitle());
+        return $this->validateAndReturn($request, $entity);
+    }
+
+    /**
+     * @param Request $request
+     * @param Link $entity
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function validateAndReturn(Request $request, Link $entity): \Symfony\Component\HttpFoundation\RedirectResponse
+    {
         $category = $this->linkService->getCategoryBySlug($request->get('ls_category'));
 
         if ($entity->isValid() && !$request->get('ls_origin') && $category !== null) {

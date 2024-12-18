@@ -46,7 +46,7 @@ class FilterController extends AbstractController
         }
 
         $years = $this->filterService->findAllYears();
-        $entities = $this->filterService->findLinks($myCategory ? $myCategory->getId() : -1, $year, $myTag ? $myTag->getId() : -1);
+        $entities = $this->filterService->findLinks($myCategory ? $myCategory->getId() : null, $year != '' ? $year : null, $myTag ? $myTag->getId() : null);
 
         if ($format == 'rss') {
             $feed = $this->feedManager->get('news');

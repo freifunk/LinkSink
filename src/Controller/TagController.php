@@ -26,7 +26,7 @@ class TagController extends AbstractController
     }
 
     #[Route('/{slug}.{format}', name: 'tag_show', defaults: ['format' => 'html'], methods: ['GET'])]
-    public function showAction(string $slug, string $format)
+    public function showAction(string $slug, string $format): Response
     {
         $allCategories = $this->tagService->getAllCategories();
         $allTags = $this->tagService->getAllTags();
@@ -98,7 +98,7 @@ class TagController extends AbstractController
     }
 
     #[Route('/{slug}/deleteconfirmed', name: 'tag_deleteconfirmed', methods: ['POST'])]
-    public function deleteConfirmedAction(Request $request, string $slug): Response
+    public function deleteConfirmedAction(string $slug): Response
     {
         $entity = $this->tagService->getTagBySlug($slug);
 

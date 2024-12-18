@@ -5,12 +5,10 @@ namespace App\Controller;
 use App\Entity\Category;
 use App\Repository\CategoryRepository;
 use App\Service\CategoryService;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\String\Slugger\SluggerInterface;
 
 #[Route('/kategorie')]
 class CategoryController extends AbstractController
@@ -136,7 +134,7 @@ class CategoryController extends AbstractController
     }
 
     #[Route('/{slug}/deleteconfirmed', name: 'category_deleteconfirmed', methods: ['POST'])]
-    public function deleteConfirmedAction(Request $request, string $slug): Response
+    public function deleteConfirmedAction(string $slug): Response
     {
         $entity = $this->categoryService->deleteCategory($slug);
 

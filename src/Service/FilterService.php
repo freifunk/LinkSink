@@ -49,16 +49,16 @@ class FilterService
         return $qb->getQuery()->getResult();
     }
 
-    public function findLinks(string $category, string $year, string $tag)
+    public function findLinks(string|null $category, string|null $year, string|null $tag)
     {
         $qb = $this->entityManager->createQueryBuilder();
         $qb
             ->select('e')
             ->from('App\Entity\Link', 'e');
-        if ($category != -1) {
+        if ($category) {
             $qb->join('e.category', 'c', 'WITH', $qb->expr()->in('c.id', $category));
         }
-        if ($tag != -1) {
+        if ($tag) {
             $qb->join('e.tags', 't', 'WITH', $qb->expr()->in('t.id', $tag));
         }
         $qb->andWhere('e.deleted IS NULL')

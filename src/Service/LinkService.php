@@ -6,11 +6,10 @@ use App\Entity\Category;
 use App\Entity\Link;
 use App\Entity\Enclosure;
 use App\Entity\Tag;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
-use http\Exception\InvalidArgumentException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\String\Slugger\SluggerInterface;
-use function PHPUnit\Framework\throwException;
 
 class LinkService
 {
@@ -25,7 +24,7 @@ class LinkService
 
     public function saveLink(Request $request, Link $entity): void
     {
-        $pubdate = new \DateTime($request->get('ls_pubdate'));
+        $pubdate = new DateTime($request->get('ls_pubdate'));
         $entity->setPubdate($pubdate);
         $entity->setPubyear($pubdate->format("Y"));
         $entity->setGuid(filter_var($request->get('ls_url'), FILTER_SANITIZE_URL));
@@ -73,7 +72,7 @@ class LinkService
 
     public function markLinkAsDeleted(Link $link): void
     {
-        $link->setDeletedAt(new \DateTime());
+        $link->setDeletedAt(new DateTime());
         $link->setDeleted(true);
         $this->entityManager->persist($link);
         $this->entityManager->flush();

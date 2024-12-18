@@ -2,7 +2,6 @@
 
 namespace App\Service;
 
-use App\Entity\Category;
 use App\Entity\Tag;
 use App\Entity\Link;
 use App\Repository\TagRepository;

@@ -132,13 +132,10 @@ class FilterServiceTest extends TestCase
             ->with('App\Entity\Link', 'e')
             ->willReturn($queryBuilder);
         $queryBuilder->expects($this->once())
-            ->method('leftJoin')
+            ->method('Join')
             ->with('e.category', 'c', 'WITH', $queryBuilder->expr()->in('c.id', -1))
             ->willReturn($queryBuilder);
-        $queryBuilder->expects($this->once())
-            ->method('leftJoin')
-            ->with('e.tags', 't', 'WITH', $queryBuilder->expr()->in('t.id', -1))
-            ->willReturn($queryBuilder);
+
         $queryBuilder->expects($this->once())
             ->method('andWhere')
             ->with('e.deleted IS NULL')
@@ -158,7 +155,7 @@ class FilterServiceTest extends TestCase
             ->method('createQueryBuilder')
             ->willReturn($queryBuilder);
 
-        $result = $this->filterService->findLinks('category', '2024', 'tag');
+        $result = $this->filterService->findLinks('category', null, null);
         $this->assertCount(2, $result);
     }
 }
