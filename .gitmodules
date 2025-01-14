@@ -1,3 +1,0 @@
-[submodule "src/Bundle/CaptchaBundle"]
-	path = src/Bundle/CaptchaBundle
-	url = git://github.com/biGGer/CaptchaBundle.git

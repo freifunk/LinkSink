@@ -1,5 +1,0 @@
-freifunk_link_sink:
-    resource: "@FreifunkLinkSinkBundle/Controller/"
-    type:     annotation
-    prefix:   /
-
