@@ -1,0 +1,53 @@
+{% extends "layout.html.twig" %}
+
+{% block body %}
+    {% if app.request.query.get('deletedname') != '' %}
+        <div class="alert alert-success" role="alert">
+            Kategorie <strong>{{ app.request.query.get('deletedname') }}</strong> gelöscht.
+        </div>
+    {% endif %}
+    {% if app.request.query.get('haslinksname') != '' %}
+        <div class="alert alert-warning" role="alert">
+            Kategorie <strong>{{ app.request.query.get('haslinksname') }}</strong> ist noch mit Links verbunden.
+        </div>
+    {% endif %}
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col">
+                <h1 class="display-4">Kategorien</h1>
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Aktionen</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for entity in entities %}
+                        <tr>
+                            <td>{{ entity.id }}</td>
+                            <td>{{ entity.name }}</td>
+                            <td>
+                                <a href="{{ path('category_edit', {'slug': entity.slug}) }}" class="btn btn-primary btn-sm">Bearbeiten</a>
+                                <a href="{{ path('category_delete', {'slug': entity.slug}) }}" class="btn btn-danger btn-sm">Löschen</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <td colspan="3">
+                            <a href="{{ path('category_new') }}" class="btn btn-success">Neue Kategorie anlegen</a>
+                        </td>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

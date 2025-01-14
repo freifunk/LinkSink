@@ -1,0 +1,9 @@
+# Full configuration: https://github.com/eko/FeedBundle
+eko_feed:
+    feeds:
+        news:
+            title:       'Gesammelte Links zu Freifunk'
+            description: 'Dieser Feed wird mit LinkSink erstellt, einer Plattform zum Sammeln von Links.'
+            link:        'https://rss.freifunk.net'
+            encoding:    'utf-8'
+            author:      'Freifunk LinkSink' # Only required for Atom feeds

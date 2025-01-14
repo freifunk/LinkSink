@@ -1,0 +1,24 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand {% if app.request.pathinfo == path('index') %}active{% endif %}" href="{{ path('index') }}">
+            Freifunk LinkSink
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link {% if app.request.pathinfo == path('_new') %}active{% endif %}" href="{{ path('_new') }}">
+                        <i class="bi bi-plus-square"></i> Neuer Link
+                    </a>
+                </li>
+            </ul>
+            <div class="d-flex navbar-nav">
+                <a class="nav-link" title="Zieh das in deine Bookmarkleiste und klicke darauf, wenn du eine interessante Seite findest." href="{{ asset('js/bookmarklet/bookmarklet_loader.txt') }}">
+                    <i class="bi bi-bookmark"></i> Bookmarklet
+                </a>
+            </div>
+        </div>
+    </div>
+</nav>

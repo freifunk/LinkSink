@@ -1,0 +1,16 @@
+<form class="category needs-validation" method="post" novalidate action="{% if entity.id|default(0) > 0 %}{{ path('category_update',{'slug':entity.slug}) }}{% else %}{{ path('category_create') }}{% endif %}">
+    <div class="form-floating mb-3">
+        <input type="text"
+               id="category_name"
+               name="name"
+               value="{{ entity.name|default('') }}"
+               required="required"
+               maxlength="255"
+               class="form-control{% if(errors|default('0') != 0 and 'category_name' in errors|keys) %} is-invalid{% endif %}">
+        <label for="category_name">Name</label>
+        <div class="invalid-feedback">
+            Bitte gib einen Namen ein.
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Speichern</button>
+</form>

@@ -1,0 +1,48 @@
+<div class="col-sm-6 col-xl-3 mb-3">
+    <div class="card h-100">
+        <div class="card-body">
+            <h2 class="card-title">
+                <a href="{{ path('_show', { 'slug': entity.slug }) }}">{{ entity.title }}</a>
+            </h2>
+            <div class="card-subtitle mb-2 text-muted">
+                <span class="badge bg-secondary">
+                    <i class="bi bi-calendar" title="Veröffentlicht am"></i> {{ entity.pubdate.format('Y-m-d') }}
+                </span>
+                {% if entity.tags|length > 0 %}
+                    {% for tag in entity.tags %}
+                        <a class="badge bg-secondary" href="{{ path('tag_show', {'slug': tag.slug}) }}">
+                            <i class="bi bi-tag"></i> {{ tag.name }}
+                        </a>
+                    {% endfor %}
+                {% endif %}
+                {% if entity.url|length > 0 %}
+                    <a class="badge bg-secondary" href="{{ entity.url }}" target="_blank">
+                        <i class="bi bi-globe"></i> Direkt zum Beitrag
+                    </a>
+                {% endif %}
+                {% if entity.enclosure is not null and entity.enclosure.length > 0 %}
+                    <a class="badge bg-secondary" href="{{ entity.enclosure.url }}" target="_blank">
+                        <i class="bi bi-music-note"></i> Mediendatei ansehen/abspielen
+                    </a>
+                {% endif %}
+            </div>
+            <div class="card-text">
+                {% if truncate_description|default(false) %}
+                    <p>{{ entity.description|u.truncate(255)|markdown_to_html }}</p>
+                {% else %}
+                    <p>{{ entity.description|markdown_to_html }}</p>
+                {% endif %}
+            </div>
+            {% if detail|default(false) %}
+                <div class="d-flex justify-content-between">
+                    <a class="btn btn-primary btn-sm" href="{{ path('_edit', {'slug': entity.slug}) }}">
+                        <i class="bi bi-pencil"></i> Bearbeiten
+                    </a>
+                    <a class="btn btn-danger btn-sm" href="{{ path('_delete', {'slug': entity.slug}) }}">
+                        <i class="bi bi-trash"></i> Löschen
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>

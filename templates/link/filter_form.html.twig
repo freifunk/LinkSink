@@ -1,0 +1,34 @@
+<form class="filter" method="post" action="{{ path('_filter') }}">
+    <div class="row g-3">
+        <div class="col-md-3">
+            <label for="link_category" class="form-label">Kategorie</label>
+            <select class="form-select" id="link_category" name="category">
+                <option value="" {% if category|default('') is empty %}selected{% endif %}> - leer - </option>
+                {% for categoryItem in categories %}
+                    <option value="{{ categoryItem.getSlug() }}" {% if categoryItem.getSlug() == category|default('') %}selected{% endif %}>{{ categoryItem.getName() }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label for="link_year" class="form-label">Jahr</label>
+            <select class="form-select" id="link_year" name="year">
+                <option value="" {% if year|default('') is empty %}selected{% endif %}> - leer - </option>
+                {% for yearItem in years %}
+                    <option value="{{ yearItem.pubyear }}" {% if yearItem.pubyear == year|default('') %}selected{% endif %}>{{ yearItem.pubyear }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label for="link_tag" class="form-label">Tag</label>
+            <select class="form-select" id="link_tag" name="tag">
+                <option value="" {% if tag|default('') is empty %}selected{% endif %}> - leer - </option>
+                {% for tagItem in tags %}
+                    <option value="{{ tagItem.getSlug() }}" {% if tagItem.getSlug() == tag|default('') %}selected{% endif %}>{{ tagItem.getName() }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-3 d-flex align-items-end">
+            <button type="submit" class="btn btn-primary w-100">Filtern</button>
+        </div>
+    </div>
+</form>

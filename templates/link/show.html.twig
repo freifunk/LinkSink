@@ -1,0 +1,7 @@
+{% extends 'layout.html.twig' %}
+
+{% block body -%}
+    <div class="container mt-4">
+        {{ include('link/link_box.html.twig', {'entity': entity, 'detail': true}) }}
+    </div>
+{% endblock %}

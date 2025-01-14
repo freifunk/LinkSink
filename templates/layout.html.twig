@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}Linkverwaltung Freifunk LinkSink{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{{ asset('build/app.css') }}" rel="stylesheet">
+    {% block javascripts %}
+        {{ importmap() }}
+    {% endblock %}
+    {% block css %}{% endblock %}
+</head>
+<body>
+{% include "navigation.html.twig" %}
+
+<div class="container mt-4">
+    <div class="card">
+        <div class="row g-0">
+            <div class="col-md-3">
+                <img src="{{ asset('images/logo.png') }}" title="Freifunk-Logo" alt="Freifunk-Logo" class="img-fluid">
+            </div>
+            <div class="col-md-9">
+                <div class="card-body">
+                    <p class="card-text">
+                        LinkSink soll helfen, verteilte Medien zusammenzutragen. Die Entwicklung kann <a href="https://github.com/freifunk/LinkSink" target="_blank">auf Github</a> unterstützt werden.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="main" class="container mt-4">
+    {% block body %}{% endblock %}
+</div>
+</body>
+</html>

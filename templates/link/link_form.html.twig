@@ -1,0 +1,134 @@
+<form class="row g-3 needs-validation" novalidate method="post" id="link-form"
+      action="{% if entity.id is not null and entity.id > 0 %}{{ path('_update',{'slug':entity.slug}) }}{% else %}{{ path('_create') }}{% endif %}">
+    <div class="col-md-6">
+        <div class="form-floating mb-3">
+            <input type="text"
+                   id="link_title"
+                   name="ls_title"
+                   required="required"
+                   maxlength="255"
+                   value="{{ entity.title|default('') }}"
+                   class="form-control">
+            <label for="link_title">Titel</label>
+            <div class="invalid-feedback">
+                Bitte gib einen Titel ein.
+            </div>
+        </div>
+        <div class="form-floating mb-3">
+            <input type="text"
+                   id="link_url"
+                   name="ls_url"
+                   required="required"
+                   maxlength="255"
+                   value="{{ entity.url|default('') }}"
+                   class="form-control">
+            <label for="link_url">URL</label>
+            <div class="invalid-feedback">
+                Bitte gib eine URL ein.
+            </div>
+        </div>
+        <div class="form-floating mb-3">
+            <input type="date"
+                   id="link_pubdate"
+                   name="ls_pubdate"
+                   required="required"
+                   value="{{ entity.pubdate.format('Y-m-d')|default('') }}"
+                   placeholder="{{ "now"|date('Y-m-d') }}"
+                   class="form-control">
+            <label for="link_pubdate">Veröffentlichungsdatum</label>
+            <div class="invalid-feedback">
+                Das Veröffentlichungsdatum ist erforderlich.
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-floating mb-3">
+            <textarea id="link_description" rows="8" name="ls_description"
+                      class="form-control">{{ entity.description|default('') }}</textarea>
+            <label for="link_description">Beschreibung</label>
+            <div class="help-block">
+                Du kannst hier <a href="https://en.wikipedia.org/wiki/Markdown">Markdown</a> benutzen.
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="form-floating mb-3">
+            <input type="hidden"
+                   id="link_enclosureid"
+                   name="ls_enclosureid"
+                   value="{{ entity.enclosure.id|default('') }}">
+            <input type="text"
+                   id="link_enclosureurl"
+                   name="ls_enclosureurl"
+                   maxlength="255"
+                   value="{{ entity.enclosure.url|default('') }}"
+                   class="form-control"
+                   data-bs-toggle="tooltip" data-bs-placement="top"
+                   data-bs-title="Link zu einer Datei: mp3, ogg, ... die z.B. zu einem Podcast gehört. Länge und Medientyp werden beim Speichern automatisch ergänzt">
+            <label for="link_enclosureurl">
+                Link zu einer Mediendatei
+                <i class="bi bi-info-circle"></i>
+            </label>
+        </div>
+        <div class="form-floating mb-3">
+            <input type="text"
+                   id="link_enclosurelength"
+                   name="ls_enclosurelength"
+                   maxlength="255"
+                   placeholder="Wird beim Speichern gesetzt"
+                   value="{{ entity.enclosure.length|default('') }}"
+                   disabled
+                   class="form-control">
+            <label for="link_enclosurelength">Medienlänge in Byte</label>
+        </div>
+        <div class="form-floating mb-3">
+            <input type="text"
+                   id="link_enclosuretype"
+                   name="ls_enclosuretype"
+                   maxlength="255"
+                   placeholder="Wird beim Speichern gesetzt"
+                   pattern=".*\/.*"
+                   value="{{ entity.enclosure.type|default('') }}"
+                   disabled
+                   class="form-control">
+            <label for="link_enclosuretype">Medientyp (MIME-Type)</label>
+        </div>
+        <div class="form-floating mb-3">
+            <select id="link_category" name="ls_category" class="form-select" required>
+                <option value="">{{ 'Bitte wähle eine Kategorie' }}</option>
+                {% for category in categories %}
+                    <option value="{{ category.getSlug() }}"
+                            {% if entity.category is not null and entity.category.getSlug() == category.getSlug() %}selected{% endif %}>{{ category.getName }}</option>
+                {% endfor %}
+            </select>
+            <label for="link_category">Kategorie</label>
+            <div class="invalid-feedback">
+                Bitte wähle eine Kategorie.
+            </div>
+        </div>
+        <div class="form-floating mb-3">
+            <input type="text"
+                   id="link_tags"
+                   name="ls_tags"
+                   value="{{ entity.getTagsAsText()|default('') }}"
+                   class="form-control">
+            <label for="link_tags">Tags</label>
+            <div class="help-block">
+                Du kannst hier kommasepariert <a href="https://en.wikipedia.org/wiki/Tag_%28metadata%29">Tags</a>
+                angeben.
+            </div>
+        </div>
+        <div class="form-floating mb-3 oos">
+            <input type="text"
+                   id="link_origin"
+                   name="ls_origin"
+                   maxlength="255"
+                   value="{{ entity.origin|default('') }}"
+                   class="form-control">
+            <label for="link_origin">Origin</label>
+        </div>
+    </div>
+    <div class="col-12">
+        <button type="submit" class="btn btn-primary">Speichern</button>
+    </div>
+</form>

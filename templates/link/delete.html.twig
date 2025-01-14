@@ -1,0 +1,29 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Lösche Eintrag{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Lösche Eintrag</h2>
+                    </div>
+                    <div class="card-body">
+                        <p>Soll der Link <strong>{{ entity.title }}</strong> wirklich gelöscht werden?</p>
+                        <div class="d-flex justify-content-between">
+                            <a href="{{ path('_show', {'slug': entity.slug}) }}" class="btn btn-secondary">Abbrechen</a>
+                            <form method="post" action="{% if entity.id|default(0) > 0 %}{{ path('_deleteconfirmed',{'slug':entity.slug}) }}{% else %}{{ path('_show',{'slug':entity.slug}) }}{% endif %}">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ entity.id) }}">
+                                <button class="btn btn-danger">Löschen</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+

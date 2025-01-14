@@ -1,0 +1,48 @@
+{% extends 'layout.html.twig' %}
+
+{% block body -%}
+    {% if app.request.query.get('deletedtitle') !='' %}
+        <div class="container mt-4">
+            <div class="row">
+                <div class="col-12">
+                    <div class="alert alert-info">
+                        Link <strong>{{ app.request.query.get('deletedtitle') }}</strong> gelöscht.
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    <div class="container mt-4">
+        <div class="row">
+            {% if app.request.attributes.get('_route') != 'index' %}
+                <div class="col-12">
+                    <div class="alert alert-info">
+                        <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) }}.rss"><i class="bi bi-rss"></i> Link zum Feed</a>
+                        ({% if entities|length == 1 %}1 gefundener Link{% else %}{{ entities|length }} gefundene Links{% endif %})
+                    </div>
+                </div>
+            {% endif %}
+            <div class="col-12">
+                {{ include('link/filter_form.html.twig') }}
+            </div>
+        </div>
+    </div>
+
+    {% if entities|length > 0 %}
+        <div class="container mt-4">
+            <div class="row">
+                {% for entity in entities %}
+                    {{ include('link/link_box.html.twig',{'truncate_summary':true, 'truncate_description': true}) }}
+                {% endfor %}
+            </div>
+        </div>
+    {% else %}
+        <div class="container mt-4">
+            <div class="row">
+                <div class="col-12">
+                    <p>Es konnten keine Links gefunden werden.</p>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
