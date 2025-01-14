@@ -12,6 +12,7 @@ class FilterControllerTest extends WebTestCase
 
     public static function setUpBeforeClass(): void
     {
+        self::ensureKernelShutdown();
         self::$client = static::createClient();
         $entityManager = self::$client->getContainer()->get('doctrine')->getManager();
 

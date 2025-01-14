@@ -11,6 +11,7 @@ class TagControllerTest extends WebTestCase
     private static KernelBrowser $client;
     public static function setUpBeforeClass(): void
     {
+        self::ensureKernelShutdown();
         self::$client = static::createClient();
     }
 
