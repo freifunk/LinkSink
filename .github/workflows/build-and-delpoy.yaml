@@ -31,7 +31,7 @@ jobs:
         run: php bin/console doctrine:schema:create --env=test
 
       - name: Run tests
-        run: vendor/bin/phpunit --configuration phpunit.xml
+        run: vendor/bin/phpunit
 
   deploy:
     runs-on: ubuntu-latest
