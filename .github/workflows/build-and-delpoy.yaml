@@ -27,7 +27,7 @@ jobs:
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress --no-suggest
 
-      - nme: create test database
+      - name: create test database
         run: php bin/console doctrine:schema:create --env=test
 
       - name: Run tests
