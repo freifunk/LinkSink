@@ -221,7 +221,7 @@
         ]
     },
     "symfony/stimulus-bundle": {
-        "version": "2.21",
+        "version": "2.22",
         "recipe": {
             "repo": "github.com/symfony/recipes",
             "branch": "main",
@@ -259,9 +259,6 @@
             "config/packages/twig.yaml",
             "templates/base.html.twig"
         ]
-    },
-    "symfony/ux-turbo": {
-        "version": "v2.21.0"
     },
     "symfony/validator": {
         "version": "7.1",
