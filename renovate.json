@@ -17,19 +17,6 @@
       "automergeStrategy": "rebase",
       "automergeSchedule": ["after 7am every weekday"],
       "schedule": ["after 6am every weekday"]
-    },
-    {
-      "packageRules": [
-        {
-          "description": "Update composer.phar",
-          "matchFiles": ["bin/composer.phar"],
-          "enabled": true,
-          "semanticCommitType": "build",
-          "semanticCommitScope": "composer",
-          "fileReplaceStrategy": "download",
-          "updateTypes": ["digest"]
-        }
-      ]
     }
   ]
 }
