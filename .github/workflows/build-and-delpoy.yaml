@@ -81,7 +81,12 @@ jobs:
             git reset --hard origin/main
             
             # Install dependencies and clear the cache
+            DATABASE_PROD_URL={{ secrets.DATABASE_PROD_URL }}
+            APP_SECRET={{ secrets.APP_SECRET }}
+            cat .env.prod | envsubst > .env
+            
             APP_ENV=prod ./bin/composer install --no-dev --optimize-autoloader
             php bin/console cache:clear --env=prod
+            php bin/console asset-map:compile
             
             php bin/console assets:install --no-debug --env=prod
