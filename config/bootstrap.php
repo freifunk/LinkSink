@@ -9,8 +9,8 @@ if (file_exists(dirname(__DIR__).'/.env')) {
 }
 
 $env = $_SERVER['APP_ENV'] ?? 'dev';
-if ($env === 'prod' && file_exists(dirname(__DIR__).'/.env.production')) {
-    (new Dotenv())->usePutenv()->overload(dirname(__DIR__).'/.env.production');
+if ($env === 'prod' && file_exists(dirname(__DIR__).'/.env.prod')) {
+    (new Dotenv())->usePutenv()->overload(dirname(__DIR__).'/.env.prod');
 }
 if ($env === 'test' && file_exists(dirname(__DIR__).'/.env.test')) {
     (new Dotenv())->usePutenv()->overload(dirname(__DIR__).'/.env.test');
