@@ -7825,16 +7825,16 @@
         },
         {
             "name": "twbs/bootstrap-icons",
-            "version": "v1.12.1",
+            "version": "v1.13.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twbs/icons.git",
-                "reference": "805db3aa03e9a6e07d658ebe360e38b0a70c1b1c"
+                "reference": "ce0e49dd063243118a115f17ad1fe1fe7576d552"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twbs/icons/zipball/805db3aa03e9a6e07d658ebe360e38b0a70c1b1c",
-                "reference": "805db3aa03e9a6e07d658ebe360e38b0a70c1b1c",
+                "url": "https://api.github.com/repos/twbs/icons/zipball/ce0e49dd063243118a115f17ad1fe1fe7576d552",
+                "reference": "ce0e49dd063243118a115f17ad1fe1fe7576d552",
                 "shasum": ""
             },
             "type": "library",
@@ -7858,9 +7858,9 @@
             ],
             "support": {
                 "issues": "https://github.com/twbs/icons/issues",
-                "source": "https://github.com/twbs/icons/tree/v1.12.1"
+                "source": "https://github.com/twbs/icons/tree/v1.13.1"
             },
-            "time": "2025-05-04T06:28:47+00:00"
+            "time": "2025-05-09T23:01:19+00:00"
         },
         {
             "name": "twig/extra-bundle",
