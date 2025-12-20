@@ -10,7 +10,7 @@
         "ext-iconv": "*",
         "doctrine/dbal": "^4",
         "doctrine/doctrine-bundle": "^3.0",
-        "doctrine/doctrine-migrations-bundle": "^3.3",
+        "doctrine/doctrine-migrations-bundle": "^4.0",
         "doctrine/orm": "^3.5",
         "eko/feedbundle": "^2.2",
         "league/commonmark": "^2.5",
